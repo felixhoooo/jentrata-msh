@@ -23,7 +23,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
   -->
-  
+
   <!-- Servlet Declarations -->
   <servlet>
     <servlet-name>StartupServlet</servlet-name>
@@ -55,7 +55,20 @@
     </init-param>
     <load-on-startup>3</load-on-startup>
   </servlet>
-  
+
+  <servlet>
+    <servlet-name>ApiDispatcher</servlet-name>
+    <display-name>API Dispatcher</display-name>
+    <servlet-class>
+      hk.hku.cecid.piazza.commons.servlet.http.HttpDispatcher
+    </servlet-class>
+    <init-param>
+      <param-name>context-id</param-name>
+      <param-value>api</param-value>
+    </init-param>
+    <load-on-startup>4</load-on-startup>
+  </servlet>
+
   <!-- Servlet Mappings -->
   <servlet-mapping>
     <servlet-name>CoreDispatcher</servlet-name>
@@ -66,7 +79,12 @@
     <servlet-name>AdminDispatcher</servlet-name>
     <url-pattern>/admin/*</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet-mapping>
+    <servlet-name>ApiDispatcher</servlet-name>
+    <url-pattern>/api/*</url-pattern>
+  </servlet-mapping>
+
   <!-- Welcome Files -->
   <welcome-file-list id="WelcomeFileList">
     <welcome-file>index.html</welcome-file>
@@ -86,6 +104,21 @@
     </web-resource-collection>
     <auth-constraint>
       <role-name>user</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <description>No description</description>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Restricted API resources</web-resource-name>
+      <description>No description</description>
+      <url-pattern>/api/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>api</role-name>
     </auth-constraint>
     <user-data-constraint>
       <description>No description</description>
@@ -120,17 +153,20 @@
    <form-login-config>
       <form-login-page>/WEB-INF/jsp/login.jsp</form-login-page>
       <form-error-page>/WEB-INF/jsp/login.jsp?failed=true</form-error-page>
-   </form-login-config>    
+   </form-login-config>
   </login-config>
 
-  <security-role> 
-    <role-name>admin</role-name> 
-  </security-role> 
-  <security-role> 
-    <role-name>corvus</role-name> 
-  </security-role> 
-  <security-role> 
-    <role-name>user</role-name> 
+  <security-role>
+    <role-name>admin</role-name>
+  </security-role>
+  <security-role>
+    <role-name>corvus</role-name>
+  </security-role>
+  <security-role>
+    <role-name>api</role-name>
+  </security-role>
+  <security-role>
+    <role-name>user</role-name>
   </security-role>
 
 </web-app>
