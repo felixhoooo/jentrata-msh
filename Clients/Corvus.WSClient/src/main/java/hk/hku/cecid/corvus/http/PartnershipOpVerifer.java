@@ -182,8 +182,8 @@ public class PartnershipOpVerifer
 			t.parse(ins, baos);
 			
 			// For debug purpose
-			// System.out.println(hk.hku.cecid.piazza.commons.io.IOHandler.readString(ins, null));
-			// System.out.println("Test: " + new String(baos.toByteArray(), "UTF-8"));			 
+			System.out.println(hk.hku.cecid.piazza.commons.io.IOHandler.readString(ins, null));
+			System.out.println("Test: " + new String(baos.toByteArray(), "UTF-8"));
 			
 			/* Pipe to another input stream */
 			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
