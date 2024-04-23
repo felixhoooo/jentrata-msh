@@ -40,7 +40,7 @@ public class EbmsMessageHistoryService extends WebServicesAdaptor{
 	      String status = getText(bodies, "status");
 	      String limit = getText(bodies, "limit");
         
-/*		  EbmsProcessor.core.log
+		  EbmsProcessor.core.log
           .info("Message History Query received request - "+
         		  "MessageID : " + (msgId ==null?"NULL":msgId)
                   + ", MessageBox: " + (msgBox ==null?"NULL":msgBox)
@@ -49,7 +49,7 @@ public class EbmsMessageHistoryService extends WebServicesAdaptor{
                   + ", Service: " + (service ==null?"NULL":service)
                   + ", Action: " + 	(action ==null?"NULL":action)
                   + ", Status: " +  (status ==null?"NULL":status)
-                  +", Number of Messages: " + (limit ==null?"NULL":limit));*/
+                  +", Number of Messages: " + (limit ==null?"NULL":limit));
 		  
 		  int resultLimit = -1;
 		  try{
