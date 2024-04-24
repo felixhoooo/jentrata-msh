@@ -28,6 +28,10 @@ import hk.hku.cecid.piazza.commons.soap.WebServicesResponse;
 import hk.hku.cecid.piazza.commons.util.Generator;
 import hk.hku.cecid.piazza.commons.util.StringUtilities;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 
 import javax.xml.soap.AttachmentPart;
@@ -47,7 +51,7 @@ public class EbmsMessageSenderService extends WebServicesAdaptor {
 
     public void serviceRequested(WebServicesRequest request,
             WebServicesResponse response) throws SOAPRequestException,
-            DAOException {
+            DAOException, IOException {
 
         Element[] bodies = request.getBodies();
         String cpaId = getText(bodies, "cpaId");
@@ -163,6 +167,33 @@ public class EbmsMessageSenderService extends WebServicesAdaptor {
         }
 
         generateReply(response, messageId);
+
+        SOAPRequest soapRequest = (SOAPRequest) request.getSource();
+        SOAPMessage soapRequestMessage = soapRequest.getMessage();
+
+        EbmsProcessor.core.log.info("***** start send xml request to land module");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File("C:\\jentrata\\xml.txt"));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            soapRequestMessage.writeTo(baos);
+            baos.writeTo(fos);
+        } catch (IOException | SOAPException ioe) {
+            ioe.printStackTrace();
+        }
+        EbmsProcessor.core.log.info("***** end send xml request to land module");
+
+        EbmsProcessor.core.log.info("***** start send ebms request to ccm");
+        FileOutputStream fos1 = null;
+        try {
+            fos1 = new FileOutputStream(new File("C:\\jentrata\\ebxml.txt"));
+            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            ebxmlMessage.writeTo(baos1);
+            baos1.writeTo(fos1);
+        } catch (IOException | SOAPException ioe) {
+            ioe.printStackTrace();
+        }
+        EbmsProcessor.core.log.info("***** end send ebms request to ccm");
 
         EbmsProcessor.core.log.info("Outbound payload processed - cpaId: "
                 + cpaId + ", service: " + service + ", action: " + action

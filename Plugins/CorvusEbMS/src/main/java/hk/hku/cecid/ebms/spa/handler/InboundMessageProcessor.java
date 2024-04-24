@@ -34,7 +34,7 @@ import hk.hku.cecid.piazza.commons.dao.DAOException;
 import hk.hku.cecid.piazza.commons.soap.SOAPRequest;
 import hk.hku.cecid.piazza.commons.net.HostInfo;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -323,6 +323,7 @@ public class InboundMessageProcessor {
 					"Cannot generate error message in processing agreement violation message",
 					e);
 		}
+
 		return ebxmlResponseMessage;
 	}
 
