@@ -21,11 +21,9 @@
     <!-- Set up a SSL Trust Manager for SSL connection -->
     <component id="ssl-trust-manager" name="SSL Trust Manager">
         <class>hk.hku.cecid.piazza.commons.security.KeyStoreTrustManager</class>
-<!--
         <parameter name="keystore-location" value="${jentrata.ebms.truststore.location:/etc/ssl/certs/java/cacerts}" />
--->
-        <parameter name="keystore-location" value="${jentrata.ebms.truststore.location:C:\Program Files\Java\jdk1.8.0_202\jre\lib\security\cacerts}" />
-        <parameter name="keystore-password" value="${jentrata.ebms.truststore.password:changeit}" />
+ <!--       <parameter name="keystore-location" value="${jentrata.ebms.truststore.location:C:\Program Files\Java\jdk1.8.0_202\jre\lib\security\cacerts}" />
+-->        <parameter name="keystore-password" value="${jentrata.ebms.truststore.password:changeit}" />
     </component>
 
     <!-- Set up a SSL Key Manager for SSL connection, it is configured in application server most case (e.g. Tomcat server.xml) -->
