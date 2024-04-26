@@ -175,3 +175,18 @@ docker image like follows:
 #### More docker information
 
 See: https://github.com/jentrata/jentrata-msh-docker
+
+
+#### Remarks
+
+        EbmsProcessor.core.log.info("***** start send xml request to land module");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File("C:\\jentrata\\xml.txt"));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            soapRequestMessage.writeTo(baos);
+            baos.writeTo(fos);
+        } catch (IOException | SOAPException ioe) {
+            ioe.printStackTrace();
+        }
+        EbmsProcessor.core.log.info("***** end send xml request to land module");
