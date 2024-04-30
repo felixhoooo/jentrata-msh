@@ -9,6 +9,7 @@
 
 package hk.hku.cecid.ebms.spa.service;
 
+import com.amazonaws.util.IOUtils;
 import hk.hku.cecid.ebms.pkg.EbxmlMessage;
 import hk.hku.cecid.ebms.pkg.MessageHeader;
 import hk.hku.cecid.ebms.spa.EbmsProcessor;
@@ -28,12 +29,11 @@ import hk.hku.cecid.piazza.commons.soap.WebServicesResponse;
 import hk.hku.cecid.piazza.commons.util.Generator;
 import hk.hku.cecid.piazza.commons.util.StringUtilities;
 
+import java.io.*;
+import java.util.Base64;
 import java.util.Iterator;
 
-import javax.xml.soap.AttachmentPart;
-import javax.xml.soap.SOAPElement;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPMessage;
+import javax.xml.soap.*;
 
 import org.w3c.dom.Element;
 
@@ -106,6 +106,7 @@ public class EbmsMessageSenderService extends WebServicesAdaptor {
 
         // Construct Ebxml message
         EbxmlMessage ebxmlMessage = null;
+
         String messageId = null;
         try {
             ebxmlMessage = new EbxmlMessage();
@@ -163,6 +164,63 @@ public class EbmsMessageSenderService extends WebServicesAdaptor {
         }
 
         generateReply(response, messageId);
+
+        //SOAPRequest soapRequest = (SOAPRequest) request.getSource();
+        //SOAPMessage soapRequestMessage = soapRequest.getMessage();
+        SOAPMessage soapRequestMessage = ebxmlMessage.getSOAPMessage();
+
+        Iterator<?> i = soapRequestMessage.getAttachments();
+        for (int j = 0; i.hasNext(); j++) {
+            AttachmentPart attachmentPart = (AttachmentPart) i.next();
+            EbmsProcessor.core.log.info("ContentId:" + attachmentPart.getContentId());
+            String encoded = null;
+            InputStream is = null;
+            try {
+                is = attachmentPart.getBase64Content();
+                byte[] bytes = IOUtils.toByteArray(is);
+                encoded = Base64.getEncoder().encodeToString(bytes);
+            } catch (SOAPException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if(encoded != null) {
+                EbmsProcessor.core.log.info("base64 content:" + encoded);
+            } else {
+                EbmsProcessor.core.log.info("empty base64 content");
+            }
+        }
+
+
+
+
+/*        EbmsProcessor.core.log.info("***** start send xml request to land module");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(new File("C:\\jentrata\\xml.txt"));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            soapRequestMessage.writeTo(baos);
+            baos.writeTo(fos);
+        } catch (IOException | SOAPException ioe) {
+            ioe.printStackTrace();
+        }
+        EbmsProcessor.core.log.info("***** end send xml request to land module");*/
+
+        EbmsProcessor.core.log.info("***** start send ebms request to ccm");
+        FileOutputStream fos1 = null;
+        try {
+            fos1 = new FileOutputStream(new File("C:\\jentrata\\ebxml.txt"));
+            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
+            ebxmlMessage.writeTo(baos1);
+            baos1.writeTo(fos1);
+        } catch (IOException | SOAPException ioe) {
+            ioe.printStackTrace();
+        }
+        EbmsProcessor.core.log.info("***** end send ebms request to ccm");
+
+
+
 
         EbmsProcessor.core.log.info("Outbound payload processed - cpaId: "
                 + cpaId + ", service: " + service + ", action: " + action

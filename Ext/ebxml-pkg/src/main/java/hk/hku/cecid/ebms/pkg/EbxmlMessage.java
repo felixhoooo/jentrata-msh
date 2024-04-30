@@ -1574,7 +1574,7 @@ public class EbxmlMessage {
      * Get the soap envelope in bytes. This function will only be used by the
      * Hermes Server itself, and it is not expected for the client to call it.
      */
-    byte[] getSoapEnvelopeBytes() {
+    public byte[] getSoapEnvelopeBytes() {
         return soapEnvelopeBytes;
     }
 
