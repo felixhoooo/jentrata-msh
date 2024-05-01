@@ -21,8 +21,10 @@
     <!-- Set up a SSL Trust Manager for SSL connection -->
     <component id="ssl-trust-manager" name="SSL Trust Manager">
         <class>hk.hku.cecid.piazza.commons.security.KeyStoreTrustManager</class>
-<!--        <parameter name="keystore-location" value="${jentrata.ebms.truststore.location:/etc/ssl/certs/java/cacerts}" />-->
+        <parameter name="keystore-location" value="${jentrata.ebms.truststore.location:/etc/ssl/certs/java/cacerts}" />
+<!--
         <parameter name="keystore-location" value="${jentrata.ebms.truststore.location:C:\Program Files\Java\jdk1.8.0_202\jre\lib\security\cacerts}" />
+-->
         <parameter name="keystore-password" value="${jentrata.ebms.truststore.password:changeit}" />
     </component>
 
@@ -30,7 +32,7 @@
     <component id="ssl-key-manager" name="SSL Key Manager">
         <class>hk.hku.cecid.piazza.commons.security.KeyStoreKeyManager</class>
 <!--        <parameter name="keystore-location" value="${jentrata.ebms.ssl.keystore.location:${corvus.home}/security/corvus.p12}" />-->
-        <parameter name="keystore-location" value="${jentrata.ebms.ssl.keystore.location:${corvus.home}\security\corvus.p12}" />
+        <parameter name="keystore-location" value="${jentrata.ebms.ssl.keystore.location:${corvus.home}/security/corvus.p12}" />
         <parameter name="keystore-password" value="${jentrata.ebms.ssl.keystore.password:password}" />
         <parameter name="key-alias" value="${jentrata.ebms.ssl.keystore.alias:corvus}" />
         <parameter name="key-password" value="${jentrata.ebms.ssl.keystore.keypass:password}" />
