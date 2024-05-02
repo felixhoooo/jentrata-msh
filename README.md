@@ -175,3 +175,14 @@ docker image like follows:
 #### More docker information
 
 See: https://github.com/jentrata/jentrata-msh-docker
+
+
+#### Build jentrata and jentrata-db containers
+
+docker run --name jentrata-db -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
+docker build -t jentrata/jentrata-msh .
+docker run --name jentrata --link jentrata-db:db -p 8080:8080 jentrata/jentrata-msh
+
+docker run --name jentrata-db2 -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
+docker run --name jentrata2 --link jentrata-db2:db -p 8081:8080 jentrata/jentrata-msh
+
