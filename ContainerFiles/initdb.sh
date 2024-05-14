@@ -1,5 +1,4 @@
 #!/bin/bash -ex
-
 psql --username jentrata <<-EOSQL
     CREATE USER "$DB_USER_NAME" WITH SUPERUSER PASSWORD '$DB_USER_PASS' ;
 EOSQL

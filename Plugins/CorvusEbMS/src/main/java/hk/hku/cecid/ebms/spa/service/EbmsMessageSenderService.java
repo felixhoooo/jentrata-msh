@@ -163,64 +163,18 @@ public class EbmsMessageSenderService extends WebServicesAdaptor {
             throwSoapServerFault("Error in passing ebms Request to msh outbound", e);
         }
 
-        generateReply(response, messageId);
-
-        //SOAPRequest soapRequest = (SOAPRequest) request.getSource();
-        //SOAPMessage soapRequestMessage = soapRequest.getMessage();
-        SOAPMessage soapRequestMessage = ebxmlMessage.getSOAPMessage();
-
-        Iterator<?> i = soapRequestMessage.getAttachments();
-        for (int j = 0; i.hasNext(); j++) {
-            AttachmentPart attachmentPart = (AttachmentPart) i.next();
-            EbmsProcessor.core.log.info("ContentId:" + attachmentPart.getContentId());
-            String encoded = null;
-            InputStream is = null;
-            try {
-                is = attachmentPart.getBase64Content();
-                byte[] bytes = IOUtils.toByteArray(is);
-                encoded = Base64.getEncoder().encodeToString(bytes);
-            } catch (SOAPException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            if(encoded != null) {
-                EbmsProcessor.core.log.info("base64 content:" + encoded);
-            } else {
-                EbmsProcessor.core.log.info("empty base64 content");
-            }
-        }
-
-
-
-
-/*        EbmsProcessor.core.log.info("***** start send xml request to land module");
         FileOutputStream fos = null;
+
         try {
-            fos = new FileOutputStream(new File("C:\\jentrata\\xml.txt"));
+            fos = new FileOutputStream(new File("/opt/jentrata/outbound.txt"));
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            soapRequestMessage.writeTo(baos);
+            ebxmlMessage.writeTo(baos);
             baos.writeTo(fos);
         } catch (IOException | SOAPException ioe) {
             ioe.printStackTrace();
         }
-        EbmsProcessor.core.log.info("***** end send xml request to land module");*/
 
-        EbmsProcessor.core.log.info("***** start send ebms request to ccm");
-        FileOutputStream fos1 = null;
-        try {
-            fos1 = new FileOutputStream(new File("C:\\jentrata\\ebxml.txt"));
-            ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-            ebxmlMessage.writeTo(baos1);
-            baos1.writeTo(fos1);
-        } catch (IOException | SOAPException ioe) {
-            ioe.printStackTrace();
-        }
-        EbmsProcessor.core.log.info("***** end send ebms request to ccm");
-
-
-
+        generateReply(response, messageId);
 
         EbmsProcessor.core.log.info("Outbound payload processed - cpaId: "
                 + cpaId + ", service: " + service + ", action: " + action

@@ -1,82 +1,82 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
+	<parent>
 		<groupId>org.jentrata.msh</groupId>
 		<artifactId>jentrata-parent</artifactId>
 		<version>3.x-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
 	<groupId>org.jentrata.msh.plugins</groupId>
-    <artifactId>jentrata-plugins-parent</artifactId>
-    <packaging>pom</packaging>
+	<artifactId>jentrata-plugins-parent</artifactId>
+	<packaging>pom</packaging>
 
-    <name>Jentrata: Plugins</name>
-    <description>Jentrata Plugins Parent</description>
+	<name>Jentrata: Plugins</name>
+	<description>Jentrata Plugins Parent</description>
 
-	<!-- Core Plugins -->    
-    <modules>
- 		<module>Corvus.Admin</module>
-    	<module>Corvus.Main</module>
-    	<module>Corvus.Main.Admin</module>
-    	<module>jentrata.integration</module>
-    </modules>
-    
-    <profiles>
-    
-    	<profile>
-    		<id>all-plugins</id>
-    		<activation>
-    			<activeByDefault>true</activeByDefault>
-    		</activation>
-    		<modules>
-    			<module>CorvusEbMS</module>
-    			<module>CorvusEbMS.Admin</module>
-    			<module>CorvusAS2</module>
-    			<module>CorvusAS2.Admin</module>
-    		</modules>
-    	</profile>
-    
-    	<profile>
-    		<id>ebms-plugins</id>
-    		<activation>
-    			<property>
-    				<name>plugins.ebms</name>
-    			</property>
-    		</activation>
-    		<modules>
-    			<module>CorvusEbMS</module>
-    			<module>CorvusEbMS.Admin</module>    		
-    		</modules>
-    	</profile>
-    	
-    	<profile>
-    		<id>as2-plugins</id>
-    		<activation>
-    			<property>
-    				<name>plugins.as2</name>
-    			</property>
-    		</activation>
-    		<modules>
-    			<module>CorvusAS2</module>
-    			<module>CorvusAS2.Admin</module>    		
-    		</modules>
-    	</profile>
-    	
-    	<profile>
-    		<id>as2Plus-plugins</id>
-    		<activation>
-    			<property>
-    				<name>plugins.as2Plus</name>
-    				<value>as2Plus</value>
-    			</property>
-    		</activation>
-    		<modules>
-    			<module>CorvusAS2Plus</module>
-    			<module>CorvusAS2Plus.Admin</module>    		
-    		</modules>
-    	</profile>
+	<!-- Core Plugins -->
+	<modules>
+		<module>Corvus.Admin</module>
+		<module>Corvus.Main</module>
+		<module>Corvus.Main.Admin</module>
+		<module>jentrata.integration</module>
+	</modules>
+
+	<profiles>
+
+		<profile>
+			<id>all-plugins</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>CorvusEbMS</module>
+				<module>CorvusEbMS.Admin</module>
+				<module>CorvusAS2</module>
+				<module>CorvusAS2.Admin</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>ebms-plugins</id>
+			<activation>
+				<property>
+					<name>plugins.ebms</name>
+				</property>
+			</activation>
+			<modules>
+				<module>CorvusEbMS</module>
+				<module>CorvusEbMS.Admin</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>as2-plugins</id>
+			<activation>
+				<property>
+					<name>plugins.as2</name>
+				</property>
+			</activation>
+			<modules>
+				<module>CorvusAS2</module>
+				<module>CorvusAS2.Admin</module>
+			</modules>
+		</profile>
+
+		<profile>
+			<id>as2Plus-plugins</id>
+			<activation>
+				<property>
+					<name>plugins.as2Plus</name>
+					<value>as2Plus</value>
+				</property>
+			</activation>
+			<modules>
+				<module>CorvusAS2Plus</module>
+				<module>CorvusAS2Plus.Admin</module>
+			</modules>
+		</profile>
 
 		<profile>
 			<id>jms-plugins</id>
@@ -91,10 +91,10 @@
 			</modules>
 		</profile>
 
-    </profiles>
-    
-    <dependencyManagement>
-        <dependencies>
+	</profiles>
+
+	<dependencyManagement>
+		<dependencies>
 
 			<dependency>
 				<groupId>org.jentrata.msh.ext</groupId>
@@ -102,13 +102,13 @@
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
-        
+
 			<dependency>
 				<groupId>org.jentrata.msh</groupId>
 				<artifactId>jentrata-commons</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.ext</groupId>
 				<artifactId>jentrata-ebxml-pkg</artifactId>
@@ -120,97 +120,97 @@
 				<artifactId>jentrata-ebxml-cpa</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.core</groupId>
 				<artifactId>jentrata-corvus-core</artifactId>
 				<version>${project.version}</version>
 				<scope>provided</scope>
-			</dependency>			
+			</dependency>
 
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-admin</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-main</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-main-admin</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-as2</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-as2-plus</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-ebms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-corvus-jms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.jentrata.msh.plugins</groupId>
 				<artifactId>jentrata-validation</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
-        </dependencies>
-    </dependencyManagement>
-    
-    <build>
-    	<resources>
-    		<resource>
-    			<directory>src/main/java</directory>
-    			<filtering>true</filtering>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<filtering>true</filtering>
 				<includes>
 					<include>**/*.wsdl</include>
 				</includes>
-    		</resource>    	
-    		<resource>
-    			<directory>src/main/resources</directory>
-    			<targetPath>plugins</targetPath>
-    			<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>plugins</targetPath>
+				<filtering>true</filtering>
 				<includes>
 					<include>**/*.xml</include>
 					<include>**/*.MF</include>
 					<include>**/*.xsl</include>
 					<include>**/*.htm</include>
 				</includes>
-    		</resource>
-    		<resource>
-    			<directory>src/main/resources</directory>
-    			<targetPath>plugins</targetPath>
-    			<filtering>false</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>plugins</targetPath>
+				<filtering>false</filtering>
 				<excludes>
 					<exclude>**/*.xml</exclude>
 					<exclude>**/*.MF</exclude>
 					<exclude>**/*.xsl</exclude>
 					<exclude>**/*.htm</exclude>
 				</excludes>
-    		</resource>
-    	</resources>
-    </build>
-    
+			</resource>
+		</resources>
+	</build>
+
 </project>

@@ -34,7 +34,11 @@ import hk.hku.cecid.piazza.commons.dao.DAOException;
 import hk.hku.cecid.piazza.commons.soap.SOAPRequest;
 import hk.hku.cecid.piazza.commons.net.HostInfo;
 
+import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.File;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -75,6 +79,8 @@ public class InboundMessageProcessor {
 	public void processIncomingMessage(EbmsRequest request,
 			EbmsResponse response) throws MessageServiceHandlerException {
 
+		EbmsProcessor.core.log.debug("debugging service2:" + request.getMessage().getService());
+
 		EbxmlMessage ebxmlRequestMessage = request.getMessage();
 
 		// Modified by Steve Chan
@@ -100,8 +106,21 @@ public class InboundMessageProcessor {
 		String messageType = messageClassifier.getMessageType();
 		boolean isSync = messageClassifier.isSync();
 
+
+		// write inbound ebxml to file
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(new File("/opt/jentrata/inbound.txt"));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ebxmlRequestMessage.writeTo(baos);
+			baos.writeTo(fos);
+		} catch (IOException | SOAPException ioe) {
+			ioe.printStackTrace();
+		}
+
 		// validation of partnership
-		String partnershipId = findPartnershipId(ebxmlRequestMessage);
+		//String partnershipId = findPartnershipId(ebxmlRequestMessage);
+		String partnershipId ="ebms-loopback";
 
 		if (partnershipId == null) {
 			// unauthorized user
@@ -1515,6 +1534,8 @@ public class InboundMessageProcessor {
 		// second - from receiver channel
 
 		if (ebxmlRequestMessage.getMessageHeader().getRefToMessageId() != null) {
+
+			EbmsProcessor.core.log.info("Find partnershipID in ebxml...");
 			// if it contains reference message id
 			try {
 				MessageDAO messageDAO = (MessageDAO) EbmsProcessor.core.dao
@@ -1560,13 +1581,20 @@ public class InboundMessageProcessor {
 
 		// search in receiver channel
 		try {
+			EbmsProcessor.core.log.info("Find partnershipID at receiver channel...");
+
 			PartnershipDAO partnershipDAO = (PartnershipDAO) EbmsProcessor.core.dao
 					.createDAO(PartnershipDAO.class);
 			PartnershipDVO partnershipDVO = (PartnershipDVO) partnershipDAO
 					.createDVO();
+
+			EbmsProcessor.core.log.info("debugging...." + ebxmlRequestMessage.getCpaId() + "," + ebxmlRequestMessage.getService() + "," + ebxmlRequestMessage.getAction());
+
 			partnershipDVO.setCpaId(ebxmlRequestMessage.getCpaId());
 			partnershipDVO.setService(ebxmlRequestMessage.getService());
 			partnershipDVO.setAction(ebxmlRequestMessage.getAction());
+
+			//debugging
 			if (partnershipDAO.findPartnershipByCPA(partnershipDVO)) {
 				return partnershipDVO.getPartnershipId();
 			}

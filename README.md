@@ -13,10 +13,10 @@ See [jentrata.org](http://jentrata.org) for complete details on the project
 ## Building/Contributing
 
 ### GitHub Setup
-1. Fork Repo into your github account
+1. Fork Repo into your gitlab account
 2. Run on your local machine:
 
-		git clone git@github.com:<github-username>/jentrata-msh.git
+		git clone https://git.lab.varmeego.com/felix.ho/jentrata-msh
 		cd jentrata-msh.git
 		git remote add upstream git@github.com:jentrata/jentrata-msh.git
 
@@ -141,7 +141,7 @@ This will create jentrata-msh-tomcat.tar.gz in jentrata-msh/Dist/target/ as well
 
 1. Start tomcat and browse to [http://localhost:8080/jentrata/admin/home](http://localhost:8080/jentrata/admin/home). You will need to login using the username and password you set in the tomcat-users.xml corvus/corus by default
 
-2. If Jentrata doesn't start correctly you can check the various log files under $TOMCAT_HOME/logs/ or $JENTRATA_HOME/logs for errors
+2. If Jentrata doesn't start correctlUnable to send HTTP SOAP requesty you can check the various log files under $TOMCAT_HOME/logs/ or $JENTRATA_HOME/logs for errors
 
 ## Running Jentrata with Docker
 
@@ -179,10 +179,24 @@ See: https://github.com/jentrata/jentrata-msh-docker
 
 #### Build jentrata and jentrata-db containers
 
-docker run --name jentrata-db -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
 docker build -t jentrata/jentrata-msh .
-docker run --name jentrata --link jentrata-db:db -p 8080:8080 jentrata/jentrata-msh
+docker run -d --name jentrata-db -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
+docker run -d --name jentrata --link jentrata-db:db -p 8080:8080 jentrata/jentrata-msh
 
-docker run --name jentrata-db2 -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
-docker run --name jentrata2 --link jentrata-db2:db -p 8081:8080 jentrata/jentrata-msh
+docker run -d --name jentrata-db2 -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
+docker run -d --name jentrata2 --link jentrata-db2:db -p 8081:8080 jentrata/jentrata-msh
 
+docker exec -it jentrata bash
+docker exec -it jentrata2 bash
+
+yum install iputils
+yum install net-tools
+yum install telnet
+
+kong:
+docker run -d --name kong-database --network=kong-net -p 5432:5432 -e "POSTGRES_USER=kong" -e "POSTGRES_DB=kong" -e "POSTGRES_PASSWORD=kongpass" postgres:13
+docker run --rm --network=kong-net -e "KONG_DATABASE=postgres" -e "KONG_PG_HOST=kong-database" -e "KONG_PG_PASSWORD=kongpass" -e "KONG_PASSWORD=test" kong/kong-gateway:3.6.1.3 kong migrations bootstrap
+docker run -d --name kong-gateway --network=kong-net -e "KONG_DATABASE=postgres" -e "KONG_PG_HOST=kong-database" -e "KONG_PG_USER=kong" -e "KONG_PG_PASSWORD=kongpass" -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" -e "KONG_PROXY_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" -e "KONG_ADMIN_LISTEN=0.0.0.0:8001" -e "KONG_ADMIN_GUI_URL=http://localhost:8002" -e KONG_LICENSE_DATA -p 8000:8000 -p 8443:8443 -p 8001:8001 -p 8444:8444 -p 8002:8002 -p 8445:8445 -p 8003:8003 -p 8004:8004 kong/kong-gateway:3.6.1.3
+
+
+curl -i -s -X POST http://localhost:8001/services --data name=example_service  --data url='http://httpbin.org

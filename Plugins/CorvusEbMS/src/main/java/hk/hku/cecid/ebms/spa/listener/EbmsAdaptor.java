@@ -10,6 +10,7 @@
 package hk.hku.cecid.ebms.spa.listener;
 
 import hk.hku.cecid.ebms.pkg.EbxmlMessage;
+import hk.hku.cecid.ebms.spa.EbmsProcessor;
 import hk.hku.cecid.piazza.commons.servlet.RequestListenerException;
 import hk.hku.cecid.piazza.commons.soap.SOAPHttpAdaptor;
 import hk.hku.cecid.piazza.commons.soap.SOAPRequest;

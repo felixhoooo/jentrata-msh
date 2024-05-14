@@ -15,8 +15,6 @@
         <class>hk.hku.cecid.piazza.commons.dao.ds.SimpleDSDAOFactory</class>
 		<parameter name="driver" value="${jentrata.as2.db.driver.class:org.postgresql.Driver}" />
 		<parameter name="url" value="${jentrata.as2.db.url:jdbc:postgresql://localhost:5432/as2}" />
-<!--		<parameter name="driver" value="${jentrata.as2.db.driver.class:com.mysql.jdbc.Driver}" />
-		<parameter name="url" value="${jentrata.as2.db.url:jdbc:mysql://127.0.0.1:3306/as2}" />-->
 		<parameter name="username" value="${jentrata.as2.db.user:corvus}" />
 		<parameter name="password" value="${jentrata.as2.db.pass:corvus}" />
         <parameter name="pooling" value="${jentrata.as2.db.pool:true}" />
