@@ -175,3 +175,70 @@ docker image like follows:
 #### More docker information
 
 See: https://github.com/jentrata/jentrata-msh-docker
+
+
+#### Notes
+#### Notes
+docker build -t jentrata/jentrata-msh .
+
+docker run -d --name jentrata-db -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
+
+docker run -d --name jentrata --link jentrata-db:db -p 8080:8080 jentrata/jentrata-msh
+
+docker run -d --name jentrata-db2 -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/as2.sql:/work/sql/as2.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/Dist/src/main/scripts/sql/ebms.sql:/work/sql/ebms.sql" -v "C:/Users/User/IdeaProjects/jentrata-msh/ContainerFiles/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh" -e "POSTGRES_USER=jentrata" -e "POSTGRES_PASSWORD=jentrata" -e "POSTGRES_DB=jentrata" -e "DB_USER_NAME=corvus" -e "DB_USER_PASS=corvus" postgres:9.5
+
+docker run -d --name jentrata2 --link jentrata-db2:db -p 8081:8080 jentrata/jentrata-msh
+
+docker exec -it jentrata bash 
+docker exec -it jentrata2 bash
+
+http://localhost:8080/jentrata/admin/home
+http://localhost:8081/jentrata/admin/home
+
+1. Copy files inside jentrata-msh-3.x-SNAPSHOT-tomcat.tar to c:\jentrata
+2. For Error: Could not find or load main class hk.hku.cecid.corvus.http.EBMSPartnershipSender, copy jentrata-corvus-wsclient-3.x-SNAPSHOT to C:\jentrata\sample\lib
+3. Copy testpayload to C:\jentrata\sample\config\ebms-send
+4. Run script ebms-partnership to create partnership
+5. Run script ebms-send, this will
+
+
+kubectl port-forward -n kong service/kong-cp-kong-manager 8002 --address 0.0.0.0
+kubectl port-forward -n kong service/kong-dp-kong-proxy 80 --address 0.0.0.0
+kubectl port-forward -n kong service/kong-cp-kong-admin 8001 --address 0.0.0.0
+
+kubectl port-forward -n redis service/my-release-redis-master 6379 --address 0.0.0.0
+
+kubectl port-forward -n redis service/my-release-redis-cluster 6379 --address 0.0.0.0
+
+redis password:
+
+kubectl port-forward -n redis-sentinel service/redis-sentinel-headless 26379 --address 0.0.0.0
+
+redis password:
+
+
+kubectl exec -i -t dnsutils -- nslookup redis-master-0.redis-headless.default.svc.cluster.local
+
+
+helm upgrade kong-cp kong/kong -n kong --values ./values-cp.yaml
+helm upgrade kong-dp kong/kong -n kong --values ./values-dp.yaml
+
+
+
+ebms=# select message_id, message_box, message_type, action, time_stamp, status, status_description from message order by time_stamp asc;
+message_id            | message_box |  message_type   |     action     |       time_stamp        | status |       status_description       
+----------------------------------+-------------+-----------------+----------------+-------------------------+--------+--------------------------------
+20240515-001608-72900@172.17.0.4 | outbox      | Order           | action         | 2024-05-15 00:16:08.731 | PS     | Acknowledgement is received
+20240515-001608-72900@172.17.0.4 | inbox       | Order           | action         | 2024-05-15 00:16:08.731 | DL     | Message is delivered
+20240515-001608-89301@172.17.0.4 | outbox      | Acknowledgement | Acknowledgment | 2024-05-15 00:16:08.893 | PS     | Message was sent synchronously
+20240515-001608-89301@172.17.0.4 | inbox       | Acknowledgement | Acknowledgment | 2024-05-15 00:16:08.893 | PS     | Message is processed
+
+
+keytool -genkey -alias cecid -keyalg RSA -keystore cecid.p12 -storetype pkcs12 -storepass 000000 -keypass 000000
+
+keytool -exportcert -alias cecid -keystore cecid.p12 -storetype pkcs12 -file cecid.cer
+
+
+docker run --name redis-host -d redis -p 6376:6379
+docker run --network=kong-net --name redis-host -d redis
+docker exec -it redis-host redis-cli

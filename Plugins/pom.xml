@@ -34,7 +34,7 @@
     			<module>CorvusEbMS</module>
     			<module>CorvusEbMS.Admin</module>
     			<module>CorvusAS2</module>
-    			<module>CorvusAS2.Admin</module>   			    			
+    			<module>CorvusAS2.Admin</module>
     		</modules>
     	</profile>
     

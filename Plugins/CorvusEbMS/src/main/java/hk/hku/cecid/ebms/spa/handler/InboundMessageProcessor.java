@@ -34,7 +34,7 @@ import hk.hku.cecid.piazza.commons.dao.DAOException;
 import hk.hku.cecid.piazza.commons.soap.SOAPRequest;
 import hk.hku.cecid.piazza.commons.net.HostInfo;
 
-import java.io.ByteArrayInputStream;
+import java.io.*;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -116,6 +116,17 @@ public class InboundMessageProcessor {
 
 		EbmsProcessor.core.log.info("Incoming ebxml message received: "
 				+ ebxmlRequestMessage.getMessageId());
+
+		//debug inbound ebxml
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(new File("/opt/jentrata/inbound.txt"));
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ebxmlRequestMessage.writeTo(baos);
+			baos.writeTo(fos);
+		} catch (IOException | SOAPException ioe) {
+			ioe.printStackTrace();
+		}
 
 		// get content type
 		String contentType = null;

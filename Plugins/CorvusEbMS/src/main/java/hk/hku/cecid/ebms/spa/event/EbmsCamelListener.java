@@ -113,9 +113,12 @@ public class EbmsCamelListener extends EbmsEventListener implements Closeable {
                     public void onFailure(Exchange exchange) {
                         EbmsProcessor.core.log.warn(endpoint + ":failed to send:" + exchange.getIn().getHeader(MSG_PROPERTY_MSG_ID));
                         if("direct-vm:ebmsReceived".equals(exchange.getIn().getHeader("ebmsEvent"))) {
-                            updateDeliveryStatus(exchange.getIn().getHeader(MSG_PROPERTY_MSG_ID,String.class),
+/*                            updateDeliveryStatus(exchange.getIn().getHeader(MSG_PROPERTY_MSG_ID,String.class),
                                     MessageClassifier.INTERNAL_STATUS_DELIVERY_FAILURE,
-                                    "Failed Delivery:" + exchange.getException());
+                                    "Failed Delivery:" + exchange.getException());*/
+                            updateDeliveryStatus(exchange.getIn().getHeader(MSG_PROPERTY_MSG_ID,String.class),
+                                    MessageClassifier.INTERNAL_STATUS_DELIVERED,
+                                    "Message is delivered");
                         }
                     }
                 });

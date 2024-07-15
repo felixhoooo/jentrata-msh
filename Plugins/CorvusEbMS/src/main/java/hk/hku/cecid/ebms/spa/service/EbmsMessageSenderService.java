@@ -163,6 +163,18 @@ public class EbmsMessageSenderService extends WebServicesAdaptor {
             throwSoapServerFault("Error in passing ebms Request to msh outbound", e);
         }
 
+        //debug outbound ebxml
+        FileOutputStream fos = null;
+
+        try {
+            fos = new FileOutputStream(new File("/opt/jentrata/outbound.txt"));
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ebxmlMessage.writeTo(baos);
+            baos.writeTo(fos);
+        } catch (IOException | SOAPException ioe) {
+            ioe.printStackTrace();
+        }
+
         generateReply(response, messageId);
 
         //SOAPRequest soapRequest = (SOAPRequest) request.getSource();
