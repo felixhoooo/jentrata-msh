@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jentrata-msh
+  labels:
+    app: jentrata-msh
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: jentrata-msh
+  template:
+    metadata:
+      labels:
+        app: jentrata-msh
+    spec:
+      containers:
+        - name: jentrata-msh
+          image: jentrata/jentrata-msh:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: _JAVA_OPTIONS
+              value: "-Xms512m -Xmx1G"
+          ports:
+            - containerPort: 8080

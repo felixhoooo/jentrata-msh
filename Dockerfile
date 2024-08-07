@@ -1,7 +1,12 @@
 FROM jentrata/jentrata-msh:3
-MAINTAINER Arran Ubels a.ubels@base2services.com
 
 ENV JENTRATA_VERSION 3.x-SNAPSHOT
+
+ENV TOMCAT_USER_NAME jentrata
+ENV TOMCAT_USER_PASS jentrata
+ENV DB_USER_NAME jentrata
+ENV DB_USER_PASS SecurePassword
+ENV DB_HOST_NAME postgres.default.svc.cluster.local
 
 COPY ./Dist/target/jentrata-msh-$JENTRATA_VERSION-tomcat.tar.gz /opt
 

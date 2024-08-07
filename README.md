@@ -234,7 +234,7 @@ message_id            | message_box |  message_type   |     action     |       t
 20240515-001608-89301@172.17.0.4 | inbox       | Acknowledgement | Acknowledgment | 2024-05-15 00:16:08.893 | PS     | Message is processed
 
 
-keytool -genkey -alias cecid -keyalg RSA -keystore cecid.p12 -storetype pkcs12 -storepass 000000 -keypass 000000
+keytool -genkey -alias cecid -keyalg RSA -keystore cecid.p12 -storetype pkcs12 -storepass 000000 -keypass 000000 -sigalg SHA1withRSA
 
 keytool -exportcert -alias cecid -keystore cecid.p12 -storetype pkcs12 -file cecid.cer
 
